@@ -47,6 +47,14 @@ pipeline {
             }
         }
 
+        stage('Run Backend Tests') {
+            steps {
+                dir('backend') {
+                    sh 'npm test -- --runInBand'
+                }
+            }
+        }
+
         stage('Validate Backend JavaScript') {
             steps {
                 dir('backend') {
