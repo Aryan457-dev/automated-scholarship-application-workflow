@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        PATH = "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env.PATH}"
+    }
+
     options {
         timestamps()
     }
@@ -9,6 +13,13 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Starting CI pipeline for Automated Scholarship Application Workflow'
+            }
+        }
+
+        stage('Check Node.js and npm') {
+            steps {
+                sh 'node -v'
+                sh 'npm -v'
             }
         }
 
