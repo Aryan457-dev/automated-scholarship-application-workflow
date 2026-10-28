@@ -69,7 +69,12 @@ pipeline {
 
         stage('Start Docker Services') {
             steps {
-                sh 'docker compose up -d --build'
+                withCredentials([
+                    string(credentialsId: 'scholarship-db-password', variable: 'DB_PASSWORD'),
+                    string(credentialsId: 'scholarship-jwt-secret', variable: 'JWT_SECRET')
+                ]) {
+                    sh 'docker compose up -d --build'
+                }
             }
         }
 
@@ -84,7 +89,7 @@ pipeline {
 
     post {
         always {
-            junit 'test/target/surefire-reports/*.xml'
+            junit allowEmptyResults: true, testResults: 'test/target/surefire-reports/*.xml'
         }
 
         success {
