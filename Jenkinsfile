@@ -66,12 +66,31 @@ pipeline {
                 }
             }
         }
+
+        stage('Start Docker Services') {
+            steps {
+                sh 'docker compose up -d --build'
+            }
+        }
+
+        stage('Run Selenium Tests') {
+            steps {
+                dir('test') {
+                    sh 'mvn test'
+                }
+            }
+        }
     }
 
     post {
+        always {
+            junit 'test/target/surefire-reports/*.xml'
+        }
+
         success {
             echo 'CI pipeline completed successfully.'
         }
+
         failure {
             echo 'CI pipeline failed. Check the stage logs.'
         }

@@ -29,3 +29,6 @@ npm-debug.log*
 
 # Local database backups
 backups/
+# Maven build output
+target/
+test/target/
